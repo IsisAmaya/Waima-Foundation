@@ -1,0 +1,18 @@
+
+<!DOCTYPE html> 
+{% load static %}
+<html>
+<head>
+    <title>App1</title>
+    <link rel="stylesheet" type="text/css" href="{%static 'Comedor/css/styles.css'%}">
+    <script src="{% static 'js/main.js' %}"></script>
+</head>
+<body>
+    <h1>App1</h1>
+    
+    <ul>
+        <li><a href="{% url 'app1' %}">Apartado 1</a></li>
+        <li><a href="{% url 'app2' %}">Apartado 2</a></li>
+        <li><a href="{% url 'app3' %}">Apartado 3</a></li>
+    </ul>
+</body>

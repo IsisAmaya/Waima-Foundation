@@ -1,0 +1,21 @@
+{% extends 'index.html' %}
+
+
+{% block content %} 
+{% if form.errors %}
+     <div>
+       Mensaje de alerta 
+     </div>
+{% endif %}
+<h1> Registro de Comidas </h1>
+<form action="{% url 'guardarComidas' %}" method="POST">
+     {% csrf_token %}
+     {% if mensaje %}
+         <div class="alert alert-success" role="alert">
+           Comida registrada exitosamente
+         </div>
+     {% endif %}
+     {{ form }}
+     <button type="submit">
+</form>
+{% endblock %}

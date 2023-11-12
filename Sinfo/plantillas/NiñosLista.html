@@ -1,0 +1,59 @@
+{% extends 'index.html' %}
+
+{% block content %}
+{%for message in messages%}
+{% if message %}
+<div class="alert alert-success" role="alert">
+{{ message }}
+</div>
+{% endif %} 
+{%endfor%}
+<style>
+.btn{
+    font-family: Roboto, sans-serif;
+    font-weight: 0;
+    font-size: 14px;
+    color: #fff;
+    background-color: #0066CC;
+    padding: 10px 30px;
+    border: 2px solid #0066cc;
+    box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+    border-radius: 50px;
+    transition : 1000ms;
+    align-items: center;
+    cursor: pointer;
+}
+</style>
+
+<br>
+<a class="btn" href="{% url 'Home' %}">VOLVER AL INICIO</a>
+<br>
+<table class="table table-striped">
+<thead>
+    <tr>
+        <br>
+        <th scope="col">Nombre</th>
+        <th scope="col">Fecha_Nacimiento </th>
+        <th scope="col">Peso</th>
+        <th scope="col">Edad</th>
+        <th scopes="col">InfoTalla</th>
+        <th scopes="col">FechaIngreso</th>
+    </tr>
+</thead>
+<tbody>
+    {% for Niño in Niños %}
+    <tr>
+        <td>{{Niño.nombre}}</td>
+        <td>{{Niño.fechaDeNacimiento }}</td>
+        <td>{{Niño.peso }}</td>
+        <td>{{Niño.edad }}</td>
+        <td>{{Niño.infoTalla }}</td>
+        <td>{{Niño.FechaIngreso}}</td> 
+        <td><a class="boton" href="{% url 'editarNiño' Niño.id %}">Editar</a></td>
+        <td><a class="boton" href="{% url 'eliminarNiño' Niño.id %}"><span style = color:red >Eliminar</span></a></td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+
+{% endblock %}

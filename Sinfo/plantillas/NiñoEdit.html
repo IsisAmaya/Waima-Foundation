@@ -1,0 +1,50 @@
+{% extends 'index.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<style>
+  .form-control-small {
+    height: 30px;
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+  .asteriskField {
+    display: none;
+  }
+  .btn{
+    font-family: Roboto, sans-serif;
+    font-weight: 0;
+    font-size: 14px;
+    color: #fff;
+    background-color: #0066CC;
+    padding: 10px 30px;
+    border: 2px solid #0066cc;
+    box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+    border-radius: 50px;
+    transition : 1000ms;
+    align-items: center;
+    cursor: pointer;
+  }
+</style>
+
+{% if form.errors %}
+      <div>
+        Mensaje de alerta 
+      </div>
+{% endif %}
+<h1> Actualización de Niños </h1>
+<form action="{% url 'actualizarNiño' Niños.id %}" method="POST">
+      {% csrf_token %}
+      {% if mensaje %}
+          <div class="alert alert-success" role="alert">
+            Niño registrado exitosamentel
+          </div>
+      {% endif %}
+      {{ form | crispy }}
+      <button type="submit" style="background-color:lime;">Guardar</button>
+</form> 
+
+<br>
+<a class="btn" href="{% url 'Home' %}">Volver a Inicio</a>
+{% endblock %}
