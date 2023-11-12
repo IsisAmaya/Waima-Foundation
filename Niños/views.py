@@ -1,10 +1,12 @@
 from django.shortcuts import render
-from django.http import HttpRequest 
+from django.http import HttpRequest, HttpResponse
 from .forms import FormularioNiños 
 from .models import Niños_tabla2
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field
 from django.contrib import messages
+import openpyxl
+
 # Create your views here.
 """def app1_vista(request): 
     return render(request,'niños.html') 
@@ -51,3 +53,34 @@ class FormularioNiñosView(HttpRequest):
         messages.success(request,'Niño eliminado correctamente')
         Niños=Niños_tabla2.objects.all() 
         return render(request,"NiñosLista.html",{"Niños":Niños})
+    
+    
+    def export_excel(request):
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename="mydata.xlsx"'
+
+        workbook = openpyxl.Workbook()
+        worksheet = workbook.active
+        worksheet.title = 'My Data'
+
+        # Write header row
+        header = ['Nombre', 'Fecha_nacimiento', 'Peso', 'Edad', 'Talla', 'Fecha_ingreso']
+        for col_num, column_title in enumerate(header, 1):
+            cell = worksheet.cell(row=1, column=col_num)
+            cell.value = column_title
+
+        # Write data rows
+        queryset = Niños_tabla2.objects.all().values_list('nombre', 'fechaDeNacimiento', 'peso',  'edad', 'infoTalla', 'FechaIngreso')
+        for row_num, row in enumerate(queryset, 1):
+            for col_num, cell_value in enumerate(row, 1):
+                cell = worksheet.cell(row=row_num+1, column=col_num)
+                cell.value = cell_value
+            
+
+        
+        for col_letter in ["B", "F"]:
+            worksheet.column_dimensions[col_letter].auto_size = True
+        
+        workbook.save(response)
+
+        return response

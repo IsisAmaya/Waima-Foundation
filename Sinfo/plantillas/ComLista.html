@@ -23,10 +23,25 @@
         align-items: center;
         cursor: pointer;
     }
+    .btn2{
+        font-family: Roboto, sans-serif;
+        font-weight: 0;
+        font-size: 14px;
+        color: #fff;
+        background-color: rgb(14, 204, 0);
+        padding: 10px 30px;
+        border: 2px solid #0ECC00;
+        box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+        border-radius: 50px;
+        transition : 1000ms;
+        align-items: center;
+        cursor: pointer;
+    }
 </style>
     
 <br>
 <a class="btn" href="{% url 'Home' %}">VOLVER AL INICIO</a>
+<a class="btn2" href="{% url 'export_excel1' %}">EXPORTAR EXCEL</a>
 <br>
 
 <table class="table table-striped">
@@ -34,20 +49,23 @@
     <tr>
         <br>
         <th scope="col">Producto</th>
-        <th scope="col">Descripcion </th>
+        <th scope="col">Fecha de ingreso</th>
+        <th scope="col">Modalidad de ingreso </th>
         <th scope="col">Peso</th>
-        <th scope="col">Informacion</th>
-        <th scope="col">FechaIngreso</th>
+        <th scope="col">Fecha de salida</th>
+        <th scope="col">Modalidad de salida</th>
     </tr>
 </thead>
 <tbody>
     {% for Comida in Comidas %}
     <tr>
         <td>{{Comida.producto}}</td>
-        <td>{{Comida.descripcion }}</td>
+        <td>{{Comida.FechaIngreso }}</td>
+        <td>{{Comida.modoIngreso }}</td>
         <td>{{Comida.peso }}</td>
-        <td>{{Comida.informacion }}</td> 
-        <td>{{Comida.FechaIngreso}}</td>
+        <td>{{Comida.fechaSalida}}</td>
+        <td>{{Comida.modoSalida }}</td>
+        
         <td><a class="boton" href="{% url 'editarComida' Comida.id %}">Editar</a></td>
         <td><a class="boton" href="{% url 'eliminarComida' Comida.id %}"><span style = color:red >Eliminar</span></a></td>
     </tr>
