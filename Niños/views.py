@@ -5,6 +5,7 @@ from .models import Niños_tabla2
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field
 from django.contrib import messages
+from datetime import datetime
 import openpyxl
 
 # Create your views here.
@@ -56,12 +57,14 @@ class FormularioNiñosView(HttpRequest):
     
     
     def export_excel(request):
+        date = datetime.now().strftime('%d-%m-%Y')
+        
         response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = 'attachment; filename="mydata.xlsx"'
+        response['Content-Disposition'] = f'attachment; filename="Niños_{date}.xlsx"'
 
         workbook = openpyxl.Workbook()
         worksheet = workbook.active
-        worksheet.title = 'My Data'
+        worksheet.title = 'Niños'
 
         # Write header row
         header = ['Nombre', 'Fecha_nacimiento', 'Peso', 'Edad', 'Talla', 'Fecha_ingreso']

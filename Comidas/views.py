@@ -4,6 +4,7 @@ from django.http import HttpRequest, HttpResponse
 from .forms import FormularioComidas 
 from .models import comida
 from django.contrib import messages
+from datetime import datetime
 import openpyxl
 # Create your views here.
 class FormularioComidasView(HttpRequest):  
@@ -45,12 +46,14 @@ class FormularioComidasView(HttpRequest):
         return render(request,"ComLista.html",{"Comidas":Comidas})
     
     def export_excel(request):
+        date = datetime.now().strftime('%d-%m-%Y')
+        
         response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = 'attachment; filename="mydata.xlsx"'
+        response['Content-Disposition'] = f'attachment; filename="Productos_{date}.xlsx"'
 
         workbook = openpyxl.Workbook()
         worksheet = workbook.active
-        worksheet.title = 'My Data'
+        worksheet.title = 'Productos'
 
         # Write header row
         header = ['Producto',  'Modo de Ingreso', 'Peso',  'Fecha de Ingreso', 'Modo de Salida', 'Fecha de Salida']
