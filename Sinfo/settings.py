@@ -1,3 +1,5 @@
+import os
+
 
 """
 Django settings for Sinfo project.
@@ -13,8 +15,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 """
 import environ 
 env=environ.Env() 
@@ -68,7 +70,7 @@ ROOT_URLCONF = 'Sinfo.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['./Sinfo/plantillas',],
+        'DIRS': [os.path.join(BASE_DIR, 'Sinfo/plantillas')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -137,7 +139,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 MEDIA_URL  = '/media/' 
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
