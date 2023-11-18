@@ -1,0 +1,64 @@
+{% extends 'index.html' %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <title>Exportar Excel</title>
+
+</head>
+{% block content %}
+<body>
+  <style>
+    .form-control-small {
+      height: 30px;
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+    .asteriskField {
+      display: none;
+    }
+    .btn{
+      font-family: Roboto, sans-serif;
+      font-weight: 0;
+      font-size: 14px;
+      color: #fff;
+      background-color: #0066CC;
+      padding: 10px 30px;
+      border: 2px solid #0066cc;
+      box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+      border-radius: 50px;
+      transition : 1000ms;
+      align-items: center;
+      cursor: pointer;
+    }
+
+  </style>
+
+    <div class="container-fluid mb-3">
+        {% if form.errors %}
+        <div>
+            Mensaje de alerta 
+        </div>
+        {% endif %}
+        <h1> Exportar Excel </h1>
+        <form method="POST" action="{% url 'export_excel' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" style="background-color: lime;">Guardar Excel</button>
+        </form>
+        <br>
+        <a class="btn" href="{% url 'Home' %}">Volver a Inicio</a>
+    </div>
+
+</body>
+
+{% endblock %}
+</html>
+
+
+
+
+

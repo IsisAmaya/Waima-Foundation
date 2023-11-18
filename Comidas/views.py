@@ -2,11 +2,13 @@ from django.shortcuts import render
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse
 from .forms import FormularioComidas 
+from .forms import FormularioExportarExcel
 from .models import comida
 from django.contrib import messages
 from datetime import datetime
 import openpyxl
-# Create your views here.
+
+
 class FormularioComidasView(HttpRequest):  
     def index(request):
         Comidas=FormularioComidas() 
@@ -46,33 +48,41 @@ class FormularioComidasView(HttpRequest):
         return render(request,"ComLista.html",{"Comidas":Comidas})
     
     def export_excel(request):
-        date = datetime.now().strftime('%d-%m-%Y')
-        
-        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = f'attachment; filename="Productos_{date}.xlsx"'
+        form = FormularioExportarExcel(request.POST or None)
+        if request.method == 'POST' and form.is_valid():
+            option = form.cleaned_data.get('option')
+            mes = form.cleaned_data.get('mes')
+            if option == 'mes' and mes is not None:
+                queryset = comida.objects.filter(FechaIngreso__year=mes.year, FechaIngreso__month=mes.month)
+            else:
+                queryset = comida.objects.all()
 
-        workbook = openpyxl.Workbook()
-        worksheet = workbook.active
-        worksheet.title = 'Productos'
+            date = datetime.now().strftime('%d-%m-%Y')
+            response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            response['Content-Disposition'] = f'attachment; filename="Productos_{date}.xlsx"'
 
-        # Write header row
-        header = ['Producto',  'Modo de Ingreso', 'Peso',  'Fecha de Ingreso', 'Modo de Salida', 'Fecha de Salida']
-        for col_num, column_title in enumerate(header, 1):
-            cell = worksheet.cell(row=1, column=col_num)
-            cell.value = column_title
+            workbook = openpyxl.Workbook()
+            worksheet = workbook.active
+            worksheet.title = 'Productos'
 
-        # Write data rows
-        queryset = comida.objects.all().values_list('producto',  'modoIngreso',  'peso', 'FechaIngreso', 'modoSalida', 'fechaSalida')
-        for row_num, row in enumerate(queryset, 1):
-            for col_num, cell_value in enumerate(row, 1):
-                cell = worksheet.cell(row=row_num+1, column=col_num)
-                cell.value = cell_value
+            # Write header row
+            header = ['Producto',  'Modo de Ingreso', 'Peso',  'Fecha de Ingreso', 'Modo de Salida', 'Fecha de Salida']
+            for col_num, column_title in enumerate(header, 1):
+                cell = worksheet.cell(row=1, column=col_num)
+                cell.value = column_title
+
+            # Write data rows
+            queryset = queryset.values_list('producto',  'modoIngreso',  'peso', 'FechaIngreso', 'modoSalida', 'fechaSalida')
+            for row_num, row in enumerate(queryset, 1):
+                for col_num, cell_value in enumerate(row, 1):
+                    cell = worksheet.cell(row=row_num+1, column=col_num)
+                    cell.value = cell_value
+
+            for col_letter in ["D", "F"]:
+                worksheet.column_dimensions[col_letter].auto_size = True
             
+            workbook.save(response)
 
-        
-        for col_letter in ["D", "F"]:
-            worksheet.column_dimensions[col_letter].auto_size = True
-        
-        workbook.save(response)
-
-        return response
+            return response
+        else:
+            return render(request, "ExportarExcel.html", {"form": form})

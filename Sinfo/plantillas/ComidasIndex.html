@@ -52,10 +52,14 @@
         </div>
     {% endif %}
     {{ form | crispy }}
-    <button type="submit" style="background-color: lime;">Registrar</button> 
-  </form>
-  <br>
-  <a class="btn" href="{% url 'Home' %}">Volver a Inicio</a>
+    {% if exportando %}
+        <button type="submit" style="background-color: lime;">Guardar Excel</button>
+    {% else %}
+        <button type="submit" style="background-color: lime;">Registrar</button>
+    {% endif %}
+</form>
+<br>
+<a class="btn" href="{% url 'Home' %}">Volver a Inicio</a>
   </div>
 
 </body>

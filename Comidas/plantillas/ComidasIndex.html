@@ -18,4 +18,14 @@
      {{ form }}
      <button type="submit">
 </form>
+
+<form method="POST" action="{% url 'export_excel1' %}">
+  {% csrf_token %}
+  <select name="option">
+      <option value="historico">Histórico</option>
+      <option value="mes">Seleccionar un mes</option>
+  </select>
+  <input type="month" name="month">
+  <input type="submit" value="EXPORTAR EXCEL">
+</form>
 {% endblock %}
