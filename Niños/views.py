@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse
-from .forms import FormularioNiños 
+from .forms import FormularioNiños, FormularioExportarExcel
 from .models import Niños_tabla2
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field
@@ -56,34 +56,46 @@ class FormularioNiñosView(HttpRequest):
         return render(request,"NiñosLista.html",{"Niños":Niños})
     
     
-    def export_excel(request):
-        date = datetime.now().strftime('%d-%m-%Y')
-        
-        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = f'attachment; filename="Niños_{date}.xlsx"'
-
-        workbook = openpyxl.Workbook()
-        worksheet = workbook.active
-        worksheet.title = 'Niños'
-
-        # Write header row
-        header = ['Nombre', 'Fecha_nacimiento', 'Peso', 'Edad', 'Talla', 'Fecha_ingreso']
-        for col_num, column_title in enumerate(header, 1):
-            cell = worksheet.cell(row=1, column=col_num)
-            cell.value = column_title
-
-        # Write data rows
-        queryset = Niños_tabla2.objects.all().values_list('nombre', 'fechaDeNacimiento', 'peso',  'edad', 'infoTalla', 'FechaIngreso')
-        for row_num, row in enumerate(queryset, 1):
-            for col_num, cell_value in enumerate(row, 1):
-                cell = worksheet.cell(row=row_num+1, column=col_num)
-                cell.value = cell_value
+    def export_excel_ninos(request):
+        form = FormularioExportarExcel(request.POST or None)
+        if request.method == 'POST' and form.is_valid():
+            option = form.cleaned_data.get('option')
+            mes = form.cleaned_data.get('mes')
+            if option == 'mes' and mes is not None:
+                queryset = Niños_tabla2.objects.filter(FechaIngreso__year=mes.year, FechaIngreso__month=mes.month)
+            else:
+                queryset = Niños_tabla2.objects.all()
+            date = datetime.now().strftime('%d-%m-%Y')
             
+            response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            response['Content-Disposition'] = f'attachment; filename="Niños_{date}.xlsx"'
 
-        
-        for col_letter in ["B", "F"]:
-            worksheet.column_dimensions[col_letter].auto_size = True
-        
-        workbook.save(response)
+            workbook = openpyxl.Workbook()
+            worksheet = workbook.active
+            worksheet.title = 'Niños'
 
-        return response
+            # Write header row
+            header = ['Nombre', 'Fecha_nacimiento', 'Peso', 'Edad', 'Talla', 'Fecha_ingreso']
+            for col_num, column_title in enumerate(header, 1):
+                cell = worksheet.cell(row=1, column=col_num)
+                cell.value = column_title
+
+            # Write data rows
+            queryset = Niños_tabla2.objects.all().values_list('nombre', 'fechaDeNacimiento', 'peso',  'edad', 'infoTalla', 'FechaIngreso')
+            for row_num, row in enumerate(queryset, 1):
+                for col_num, cell_value in enumerate(row, 1):
+                    cell = worksheet.cell(row=row_num+1, column=col_num)
+                    cell.value = cell_value
+                
+
+            
+            for col_letter in ["B", "F"]:
+                worksheet.column_dimensions[col_letter].auto_size = True
+            
+            workbook.save(response)
+            
+            return response
+        
+        else:
+            return render(request, "exportarExcelNiños.html", {"form": form})
+

@@ -7,6 +7,6 @@ from .views import FormularioComidasView
 urlpatterns = [ 
     path('registrarComidas/',FormularioComidasView.index, name='registrarComida'), 
     path('listarComidas/',FormularioComidasView.index, name='listarComida'),
-    path('exportarExcel/', FormularioComidasView.export_excel, name='export_excel1'),
+    path('exportarExcelComidas/', FormularioComidasView.export_excel, name='export_excel_comidas'),
     
 ]

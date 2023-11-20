@@ -11,7 +11,7 @@ urlpatterns = [
     path('listarNiños/',FormularioNiñosView.listar_Niños, name='listarNiño'),
     path('editarNiño/',FormularioNiñosView.editar, name='editarNiño'), 
     path('actualizarNiño/',FormularioNiñosView.actualizar_niño, name='actualizarNiño'),
-    path('exportarExcel/', FormularioNiñosView.export_excel,name='export_excel'),
+    path('exportarExcelNiños/', FormularioNiñosView.export_excel_ninos,name='export_excel_niños'),
     
     
 ]

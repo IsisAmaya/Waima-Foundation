@@ -44,7 +44,7 @@
         </div>
         {% endif %}
         <h1> Exportar Excel </h1>
-        <form method="POST" action="{% url 'export_excel' %}">
+        <form method="POST" action="{% url 'export_excel_comidas' %}">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" style="background-color: lime;">Guardar Excel</button>
