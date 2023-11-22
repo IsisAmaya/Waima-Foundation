@@ -87,6 +87,11 @@ class FormularioComidasView(HttpRequest):
         else:
             return render(request, "exportarExcelComidas.html", {"form": form})
         
+        
+    
+    def dateRange(request):
+        return render(request, "dateExcel.html")
+
     
     def dateRange(request):
         return render(request, "dateExcel.html")
