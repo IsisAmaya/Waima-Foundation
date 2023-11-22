@@ -9,10 +9,10 @@ class FormularioNiños(forms.ModelForm):
 
 
 class FormularioExportarExcel(forms.Form):
-        OPCIONES = [
-            ('historico', 'Histórico'),
-            ('mes', 'Seleccionar un mes'),
-        ]
+    OPCIONES = [
+        ('historico', 'Histórico'),
+        ('mes', 'Seleccionar un mes'),
+    ]
 
-        option = forms.ChoiceField(choices=OPCIONES, initial='historico')
-        mes = forms.DateField(input_formats=['%Y-%m'], required=False)
+    option = forms.ChoiceField(choices=OPCIONES, initial='historico')
+    mes = forms.DateField(widget=forms.DateInput(format='%m-%Y', attrs={'placeholder': 'MM-YYYY'}), input_formats=['%m-%Y'], required=False)

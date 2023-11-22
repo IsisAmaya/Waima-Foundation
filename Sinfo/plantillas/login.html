@@ -1,5 +1,5 @@
 
-{% extends 'Index.html' %}
+{% extends 'index.html' %}
 
 {% block content %}
 {%for message in messages%}
@@ -14,7 +14,7 @@
 		<form action="" method=POST style= "margin:auto;">
 			{% csrf_token %}
 
-      <main class="form-signin w-100 m-auto" style="margin:auto;>
+      <main class="form-signin w-100 m-auto" style="margin:auto;">
         <form class="mx-auto">
           <img class="mb-4" src="https://waimafundacion.org/sitio/wp-content/uploads/2018/04/cropped-logo.png" alt="" width="200" height="200">
           <h1 class="h3 mb-3 fw-normal">Por favor inicie sesión</h1>
@@ -145,8 +145,8 @@
   .form-signin {
     max-width: 330px;
     padding: 15px;
-    margin: 0 auto; /* Agrega esta línea para centrar horizontalmente */
-    margin-top: 40px; /* Ajusta el margen superior según sea necesario */
+    margin: 0 auto;
+    margin-top: 40px;
   }
 </style>
 

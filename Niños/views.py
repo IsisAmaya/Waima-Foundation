@@ -8,10 +8,7 @@ from django.contrib import messages
 from datetime import datetime
 import openpyxl
 
-# Create your views here.
-"""def app1_vista(request): 
-    return render(request,'niños.html') 
-""" 
+
 class FormularioNiñosView(HttpRequest): 
     def init(self, args, **kwargs):
         super(FormularioNiños, self).init(args, **kwargs)
@@ -81,14 +78,12 @@ class FormularioNiñosView(HttpRequest):
                 cell.value = column_title
 
             # Write data rows
-            queryset = Niños_tabla2.objects.all().values_list('nombre', 'fechaDeNacimiento', 'peso',  'edad', 'infoTalla', 'FechaIngreso')
+            queryset = queryset.values_list('nombre', 'fechaDeNacimiento', 'peso',  'edad', 'infoTalla', 'FechaIngreso')
             for row_num, row in enumerate(queryset, 1):
                 for col_num, cell_value in enumerate(row, 1):
                     cell = worksheet.cell(row=row_num+1, column=col_num)
                     cell.value = cell_value
                 
-
-            
             for col_letter in ["B", "F"]:
                 worksheet.column_dimensions[col_letter].auto_size = True
             
@@ -98,4 +93,3 @@ class FormularioNiñosView(HttpRequest):
         
         else:
             return render(request, "exportarExcelNiños.html", {"form": form})
-
