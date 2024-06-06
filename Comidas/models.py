@@ -17,7 +17,7 @@ class comida(models.Model):
     producto = models.TextField(max_length=50)
     FechaIngreso= models.DateField(null=True)
     modoIngreso = models.CharField(max_length=100, choices=opciones1, null=True)
-    peso= models.IntegerField(max_length=100)
+    peso = models.DecimalField(max_digits=5, decimal_places=2)
     fechaSalida = models.DateField(null=True)
     modoSalida = models.CharField(max_length=100, choices=opciones2, null=True)
     

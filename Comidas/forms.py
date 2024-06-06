@@ -7,7 +7,7 @@ class FormularioComidas(forms.ModelForm):
         fields='__all__' 
         widgets={
             'producto':forms.TextInput(attrs={'class': 'form-control-small'}),
-            'peso': forms.TextInput(attrs={'class': 'form-control-small'}),
+            'peso': forms.NumberInput(attrs={'class': 'form-control-small', 'step': '0.01'}),
             'modoIngreso':forms.Select(attrs={'class': 'form-control'}),
             'modoSalida':forms.Select(attrs={'class': 'form-control'}), 
             'FechaIngreso':forms.DateInput(attrs={'type':'date'}), 
