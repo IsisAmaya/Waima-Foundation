@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-8$d#e22=c_fhs@83r6ql@pf^3$uxti@!!*o-+qje#t0)(#k1yh
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["catitest.pythonanywhere.com"]
 
 
 # Application definition
